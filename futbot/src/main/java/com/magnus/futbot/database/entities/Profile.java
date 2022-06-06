@@ -1,12 +1,14 @@
 package com.magnus.futbot.database.entities;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 import java.util.Objects;
 
-@Entity
+@Document("profiles")
 public class Profile {
 
     @Id @GeneratedValue private String id;
@@ -66,5 +68,11 @@ public class Profile {
     @Override
     public int hashCode() {
         return Objects.hash(id, email, password, createdDate);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Customer[id=%s, email='%s', createdDate='%s']",
+                id, email, createdDate);
     }
 }
