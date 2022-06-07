@@ -25,7 +25,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        final ConnectionString connectionString = new ConnectionString("mongodb+srv://FidoDidoo100:<password>@fbcluster.rdkdn.mongodb.net/futbot-java");
+        final ConnectionString connectionString = new ConnectionString("mongodb+srv://FidoDidoo100:А123123123а@fbcluster.rdkdn.mongodb.net/futbot-java");
         final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
