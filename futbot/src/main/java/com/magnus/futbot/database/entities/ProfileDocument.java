@@ -1,12 +1,12 @@
 package com.magnus.futbot.database.entities;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.Objects;
 
-@org.springframework.data.mongodb.core.mapping.Document(collection = "profile")
+@Document(collection = "profile")
 public class ProfileDocument {
 
     private ObjectId _id;
@@ -63,13 +63,5 @@ public class ProfileDocument {
     public String toString() {
         return String.format("Customer[id=%s, email='%s', createdDate='%s']",
                 _id, email, "asd");
-    }
-
-    public Document toDocument(ProfileDocument profileDocument) {
-        Document doc = new Document();
-        doc.put("email", profileDocument.email);
-        doc.put("password", profileDocument.password);
-
-        return doc;
     }
 }
