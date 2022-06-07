@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.magnus.futbot.dtos.ProfileDTO;
 
+import java.util.List;
+
 @RestController()
 public class ProfilesController {
 
@@ -18,10 +20,9 @@ public class ProfilesController {
 
     @GetMapping("/profiles/get-all")
     @HttpConstraint
-    public ResponseEntity<String> Get(@RequestParam String userId) {
-        return new ResponseEntity<>(userId, HttpStatus.OK);
+    public ResponseEntity<List<ProfileDTO>> Get(@RequestParam String userId) {
+        return new ResponseEntity<>(profilesService.geAll(), HttpStatus.OK);
     }
-
 
     @PostMapping("/profiles/add-profile")
     @HttpConstraint

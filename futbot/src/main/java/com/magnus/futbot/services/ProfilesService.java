@@ -1,11 +1,15 @@
 package com.magnus.futbot.services;
 
-import com.magnus.futbot.database.entities.Profile;
+import com.magnus.futbot.database.entities.ProfileDocument;
 import com.magnus.futbot.database.repositories.ProfileRepository;
 import com.magnus.futbot.dtos.ProfileDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Configuration
 public class ProfilesService {
@@ -19,8 +23,18 @@ public class ProfilesService {
     }
 
     public ProfileDTO add(ProfileDTO profileDTO) {
-        Profile profile = mapper.map(profileDTO, Profile.class);
-        profilesRepository.add(profile);
-        return mapper.map(profile, ProfileDTO.class);
+        ProfileDocument profileDocument = mapper.map(profileDTO, ProfileDocument.class);
+        profilesRepository.add(profileDocument);
+        return mapper.map(profileDocument, ProfileDTO.class);
     }
+
+    public List<ProfileDTO> geAll() {
+        List<ProfileDTO> result = new ArrayList<>();
+        for (ProfileDocument profileDocument : profilesRepository.getAll().find()) {
+            result.add(mapper.map(profileDocument, ProfileDTO.class));
+        }
+
+        return result;
+    }
+
 }
