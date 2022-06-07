@@ -24,13 +24,13 @@ public class ProfilesService {
 
     public ProfileDTO add(ProfileDTO profileDTO) {
         ProfileDocument profileDocument = mapper.map(profileDTO, ProfileDocument.class);
-        profilesRepository.add(profileDocument);
+        profilesRepository.insert(profileDocument);
         return mapper.map(profileDocument, ProfileDTO.class);
     }
 
     public List<ProfileDTO> geAll() {
         List<ProfileDTO> result = new ArrayList<>();
-        for (ProfileDocument profileDocument : profilesRepository.getAll().find()) {
+        for (ProfileDocument profileDocument : profilesRepository.findAll()) {
             result.add(mapper.map(profileDocument, ProfileDTO.class));
         }
 
