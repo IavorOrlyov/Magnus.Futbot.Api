@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URI;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -36,6 +39,7 @@ public class UserFilter implements Filter {
             return;
         }
 
+        String accessToken = "";
         if ("POST".equalsIgnoreCase(wrappedRequest.getMethod())
                 || "PUT".equalsIgnoreCase(wrappedRequest.getMethod())
                 || "PATCH".equalsIgnoreCase(wrappedRequest.getMethod())) {
@@ -43,14 +47,20 @@ public class UserFilter implements Filter {
             if (buf.length > 0) {
                 try {
                     String requestBody = new String(buf, 0, buf.length, wrappedRequest.getCharacterEncoding());
-                    JSONObject jsonObject = new JSONObject(requestBody);
-                    appSettings.setUserId(jsonObject.getString("userId"));
+                    accessToken = new JSONObject(requestBody).getString("accessToken");
+
                 } catch (Exception e) {
                     System.out.println("error in reading request body");
                 }
             }
         } else if ("GET".equalsIgnoreCase(wrappedRequest.getMethod())) {
-            appSettings.setUserId(wrappedRequest.getParameterValues("userId")[0]);
+            accessToken = wrappedRequest.getParameterValues("accessToken")[0];
         }
+
+        final String uri = "https://magnus-sso.azurewebsites.net/api/users/validate-token?accessToken=" + accessToken;
+
+        RestTemplate restTemplate = new RestTemplate();
+        Object userId = restTemplate.getForObject(uri, Object.class);
+        appSettings.setUserId("userId");
     }
 }

@@ -21,7 +21,7 @@ public class ProfilesController {
 
     @GetMapping("/get-all")
     @HttpConstraint
-    public ResponseEntity<List<ProfileDTO>> Get(@RequestParam String userId) {
+    public ResponseEntity<List<ProfileDTO>> Get(@RequestParam String accessToken) {
         return new ResponseEntity<>(profilesService.geAll(), HttpStatus.OK);
     }
 
