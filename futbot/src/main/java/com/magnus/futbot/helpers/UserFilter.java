@@ -2,6 +2,7 @@ package com.magnus.futbot.helpers;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -20,6 +21,9 @@ public class UserFilter implements Filter {
 
     @Autowired
     private AppSettings appSettings;
+
+    @Value("${MagnusSSO}")
+    private String ssoUrl;
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException {
 
@@ -57,10 +61,9 @@ public class UserFilter implements Filter {
             accessToken = wrappedRequest.getParameterValues("accessToken")[0];
         }
 
-        final String uri = "https://magnus-sso.azurewebsites.net/api/users/validate-token?accessToken=" + accessToken;
+        final String uri = ssoUrl + "/users/validate-token?accessToken=" + accessToken;
 
-        RestTemplate restTemplate = new RestTemplate();
-        Object userId = restTemplate.getForObject(uri, Object.class);
-        appSettings.setUserId("userId");
+        String userId = new RestTemplate().getForObject(uri, String.class);
+        appSettings.setUserId(userId);
     }
 }
