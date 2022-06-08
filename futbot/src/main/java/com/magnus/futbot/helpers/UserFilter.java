@@ -18,16 +18,15 @@ public class UserFilter implements Filter {
     @Autowired
     private AppSettings appSettings;
 
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException {
 
         HttpServletRequest request = (HttpServletRequest) req;
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
         try {
+            initUser(wrappedRequest);
             chain.doFilter(wrappedRequest, res);
         } catch (ServletException e) {
             throw new RuntimeException(e);
-        } finally {
-            initUser(wrappedRequest);
         }
     }
 
