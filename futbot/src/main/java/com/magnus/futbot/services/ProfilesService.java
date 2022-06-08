@@ -3,27 +3,34 @@ package com.magnus.futbot.services;
 import com.magnus.futbot.database.entities.ProfileDocument;
 import com.magnus.futbot.database.repositories.ProfileRepository;
 import com.magnus.futbot.dtos.ProfileDTO;
+import com.magnus.futbot.helpers.AppSettings;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 @Configuration
 public class ProfilesService {
-    private final ModelMapper mapper;
-    private final ProfileRepository profilesRepository;
 
+    private final ModelMapper mapper;
     @Autowired
-    public ProfilesService(ProfileRepository profilesRepository) {
-        this.mapper = new ModelMapper();
-        this.profilesRepository = profilesRepository;
+    private ProfileRepository profilesRepository;
+    @Autowired
+    private AppSettings appSettings;
+
+
+    public ProfilesService() {
+        mapper = new ModelMapper();
     }
 
     public ProfileDTO add(ProfileDTO profileDTO) {
         ProfileDocument profileDocument = mapper.map(profileDTO, ProfileDocument.class);
+        profileDocument.setCreateDate(new Date());
+        profileDocument.setUserId(new ObjectId(appSettings.getUserId()));
         profilesRepository.insert(profileDocument);
         return mapper.map(profileDocument, ProfileDTO.class);
     }

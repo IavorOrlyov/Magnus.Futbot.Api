@@ -4,15 +4,12 @@ public class ProfileDTO {
     private String email;
     private String password;
 
-    private String userId;
-
     public ProfileDTO() {
     }
 
-    public ProfileDTO(String email, String password, String userId) {
+    public ProfileDTO(String email, String password) {
         this.email = email;
         this.password = password;
-        this.userId = userId;
     }
 
     public String getEmail() {
@@ -29,13 +26,5 @@ public class ProfileDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 }

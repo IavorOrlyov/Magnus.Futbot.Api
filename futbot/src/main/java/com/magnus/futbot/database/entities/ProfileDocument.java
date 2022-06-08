@@ -11,15 +11,18 @@ public class ProfileDocument {
 
     private ObjectId _id;
     private String email;
-
+    private ObjectId userId;
     private String password;
+    private Date createDate;
 
     public ProfileDocument() {
     }
 
-    public ProfileDocument(String email, String password, Date createdDate) {
+    public ProfileDocument(String email, String password, Date createdDate, ObjectId userId) {
         this.email = email;
         this.password = password;
+        this.userId = userId;
+        this.createDate = createdDate;
     }
 
     public String getEmail() {
@@ -54,14 +57,30 @@ public class ProfileDocument {
         return Objects.equals(email, profileDocument.email) && Objects.equals(password, profileDocument.password);
     }
 
+    public ObjectId getUserId() {
+        return userId;
+    }
+
+    public void setUserId(ObjectId userId) {
+        this.userId = userId;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(email, password);
+        return Objects.hash(email, password, userId);
     }
 
     @Override
     public String toString() {
-        return String.format("Customer[id=%s, email='%s', createdDate='%s']",
-                _id, email, "asd");
+        return String.format("Customer[id=%s, email='%s', createdDate='%s', user=%s]",
+                _id, email, createDate, userId);
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }
