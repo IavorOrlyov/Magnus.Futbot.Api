@@ -35,7 +35,16 @@ public class UserFilter implements Filter {
             return;
         }
 
-        String accessToken = request.getHeader("Access-Token");
+        String accessToken = "";
+
+        if ("POST".equalsIgnoreCase(request.getMethod())
+                || "PUT".equalsIgnoreCase(request.getMethod())
+                || "PATCH".equalsIgnoreCase(request.getMethod())) {
+            accessToken = request.getHeader("Access-Token");
+        } else if ("GET".equalsIgnoreCase(request.getMethod())) {
+            accessToken = request.getParameterValues("accessToken")[0];
+        }
+
         final String uri = System.getenv("MagnusSSO") + "/users/validate-token?accessToken=" + accessToken;
 
         String userId = new RestTemplate().getForObject(uri, String.class);
