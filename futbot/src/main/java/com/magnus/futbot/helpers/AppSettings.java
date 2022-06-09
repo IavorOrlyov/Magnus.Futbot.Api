@@ -1,24 +1,25 @@
 package com.magnus.futbot.helpers;
 
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppSettings {
 
-    private String userId;
+    private ObjectId userId;
 
     public AppSettings() {
     }
 
-    public AppSettings(String userId) {
+    public AppSettings(ObjectId userId) {
         this.userId = userId;
     }
 
-    public String getUserId() {
+    public ObjectId getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(ObjectId userId) {
         this.userId = userId;
     }
 }

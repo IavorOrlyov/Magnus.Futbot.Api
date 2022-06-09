@@ -30,14 +30,14 @@ public class ProfilesService {
     public ProfileDTO add(ProfileDTO profileDTO) {
         ProfileDocument profileDocument = mapper.map(profileDTO, ProfileDocument.class);
         profileDocument.setCreateDate(new Date());
-        profileDocument.setUserId(new ObjectId(appSettings.getUserId()));
+        profileDocument.setUserId(appSettings.getUserId());
         profilesRepository.insert(profileDocument);
         return mapper.map(profileDocument, ProfileDTO.class);
     }
 
     public List<ProfileDTO> geAll() {
         List<ProfileDTO> result = new ArrayList<>();
-        for (ProfileDocument profileDocument : profilesRepository.findAll()) {
+        for (ProfileDocument profileDocument : profilesRepository.findAllByUserId(appSettings.getUserId())) {
             result.add(mapper.map(profileDocument, ProfileDTO.class));
         }
 
