@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class UserFilter implements Filter {
@@ -31,7 +32,8 @@ public class UserFilter implements Filter {
 
     private void initUser(HttpServletRequest request) {
 
-        if (request.getDispatcherType() != DispatcherType.REQUEST) {
+        if (request.getDispatcherType() != DispatcherType.REQUEST
+                || "OPTIONS".equalsIgnoreCase(request.getMethod())) {
             return;
         }
 
@@ -44,10 +46,11 @@ public class UserFilter implements Filter {
         } else if ("GET".equalsIgnoreCase(request.getMethod())) {
             accessToken = request.getParameterValues("accessToken")[0];
         }
+        if (accessToken != null) {
+            final String uri = System.getenv("MagnusSSO") + "/users/validate-token?accessToken=" + accessToken;
 
-        final String uri = System.getenv("MagnusSSO") + "/users/validate-token?accessToken=" + accessToken;
-
-        String userId = new RestTemplate().getForObject(uri, String.class);
-        appSettings.setUserId(new ObjectId(userId));
+            String userId = new RestTemplate().getForObject(uri, String.class);
+            appSettings.setUserId(new ObjectId(userId));
+        }
     }
 }
