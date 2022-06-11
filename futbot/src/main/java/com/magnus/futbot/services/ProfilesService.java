@@ -5,6 +5,8 @@ import com.magnus.futbot.database.repositories.ProfileRepository;
 import com.magnus.futbot.dtos.ProfileDTO;
 import com.magnus.futbot.helpers.AppSettings;
 import com.magnus.futbot.selenium.LoginService;
+import com.magnus.futbot.selenium.models.LoginResponseDTO;
+import com.magnus.futbot.selenium.models.LoginResponseType;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +32,21 @@ public class ProfilesService {
         mapper = new ModelMapper();
     }
 
-    public ProfileDTO add(ProfileDTO profileDTO) {
+    public LoginResponseDTO add(ProfileDTO profileDTO) {
         ProfileDocument profileDocument = mapper.map(profileDTO, ProfileDocument.class);
         profileDocument.setCreateDate(new Date());
         profileDocument.setUserId(appSettings.getUserId());
         profilesRepository.insert(profileDocument);
 
+        LoginResponseDTO loginResponseDTO = null;
         try {
-            loginService.Login(profileDTO.getEmail(), profileDTO.getPassword());
+            loginResponseDTO = loginService.Login(profileDTO.getEmail(), profileDTO.getPassword());
         } catch (InterruptedException e) {
+            loginResponseDTO = new LoginResponseDTO(LoginResponseType.UnknownError);
             System.out.println("Login was unsuccessful");
         }
 
-        return mapper.map(profileDocument, ProfileDTO.class);
+        return loginResponseDTO;
     }
 
     public List<ProfileDTO> geAll() {

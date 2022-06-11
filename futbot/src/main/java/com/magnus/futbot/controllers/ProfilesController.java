@@ -2,6 +2,7 @@ package com.magnus.futbot.controllers;
 
 import javax.servlet.annotation.HttpConstraint;
 
+import com.magnus.futbot.selenium.models.LoginResponseDTO;
 import com.magnus.futbot.services.ProfilesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class ProfilesController {
 
     @PostMapping("/add-profile")
     @HttpConstraint
-    public ResponseEntity<ProfileDTO> AddProfile(@RequestBody ProfileDTO profileDTO) {
+    public ResponseEntity<LoginResponseDTO> AddProfile(@RequestBody ProfileDTO profileDTO) {
         return new ResponseEntity<>(profilesService.add(profileDTO), HttpStatus.OK);
     }
 }

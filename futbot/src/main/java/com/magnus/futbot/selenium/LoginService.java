@@ -35,11 +35,11 @@ public class LoginService extends BaseSelenium {
 
         WebElement signInButton = webDriver.findElement(new By.ByCssSelector("#logInBtn"));
         signInButton.click();
-        Thread.sleep(500);
+        Thread.sleep(1500);
 
         WebElement wrongCredentials = null;
          try {
-             wrongCredentials = webDriver.findElement(new By.ByClassName("#online-general-error > p"));
+             wrongCredentials = webDriver.findElement(new By.ByCssSelector("#online-general-error > p"));
          } catch (Exception ex) {}
 
          if (wrongCredentials != null) return new LoginResponseDTO(LoginResponseType.WrongCredentials);
