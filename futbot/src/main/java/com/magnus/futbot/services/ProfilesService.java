@@ -4,6 +4,7 @@ import com.magnus.futbot.database.entities.ProfileDocument;
 import com.magnus.futbot.database.repositories.ProfileRepository;
 import com.magnus.futbot.dtos.ProfileDTO;
 import com.magnus.futbot.helpers.AppSettings;
+import com.magnus.futbot.selenium.LoginService;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class ProfilesService {
     private ProfileRepository profilesRepository;
     @Autowired
     private AppSettings appSettings;
+    @Autowired
+    private LoginService loginService;
 
 
     public ProfilesService() {
@@ -32,6 +35,13 @@ public class ProfilesService {
         profileDocument.setCreateDate(new Date());
         profileDocument.setUserId(appSettings.getUserId());
         profilesRepository.insert(profileDocument);
+
+        try {
+            loginService.Login(profileDTO.getEmail(), profileDTO.getPassword());
+        } catch (InterruptedException e) {
+            System.out.println("Login was unsuccessful");
+        }
+
         return mapper.map(profileDocument, ProfileDTO.class);
     }
 
