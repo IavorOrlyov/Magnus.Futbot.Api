@@ -42,7 +42,7 @@ public class ProfilesService {
         try {
             loginResponseDTO = loginService.Login(profileDTO.getEmail(), profileDTO.getPassword());
         } catch (InterruptedException e) {
-            loginResponseDTO = new LoginResponseDTO(LoginResponseType.UnknownError);
+            loginResponseDTO = new LoginResponseDTO(LoginResponseType.UnknownError.ordinal());
             System.out.println("Login was unsuccessful");
         }
 

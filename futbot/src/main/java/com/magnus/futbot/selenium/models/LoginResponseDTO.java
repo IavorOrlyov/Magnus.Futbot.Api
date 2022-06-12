@@ -1,17 +1,17 @@
 package com.magnus.futbot.selenium.models;
 
 public class LoginResponseDTO {
-    private LoginResponseType loginStatus;
+    private int loginStatus;
 
-    public LoginResponseDTO(LoginResponseType loginStatus) {
+    public LoginResponseDTO(int loginStatus) {
         this.loginStatus = loginStatus;
     }
 
-    public LoginResponseType getLoginStatus() {
+    public int getLoginStatus() {
         return loginStatus;
     }
 
-    public void setLoginStatus(LoginResponseType loginStatus) {
+    public void setLoginStatus(int loginStatus) {
         this.loginStatus = loginStatus;
     }
 }

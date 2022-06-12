@@ -42,8 +42,20 @@ public class LoginService extends BaseSelenium {
              wrongCredentials = webDriver.findElement(new By.ByCssSelector("#online-general-error > p"));
          } catch (Exception ex) {}
 
-         if (wrongCredentials != null) return new LoginResponseDTO(LoginResponseType.WrongCredentials);
+         if (wrongCredentials != null) return new LoginResponseDTO(LoginResponseType.WrongCredentials.ordinal());
 
-        return new LoginResponseDTO(LoginResponseType.Successful);
+         WebElement securityCodeRequired = null; //#page_header
+        try {
+            securityCodeRequired = webDriver.findElement(new By.ByCssSelector("#page_header"));
+        } catch (Exception ex) {}
+
+        if (securityCodeRequired != null) {
+            WebElement sendCodeBtn = webDriver.findElement(new By.ByCssSelector("#btnSendCode"));
+            sendCodeBtn.click();
+            return new LoginResponseDTO(LoginResponseType.ConfirmationKeyRequired.ordinal());
+        }
+
+
+        return new LoginResponseDTO(LoginResponseType.Successful.ordinal());
     }
 }
